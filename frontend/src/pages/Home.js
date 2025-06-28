@@ -161,15 +161,15 @@ const Home = () => {
             Welcome to R.S. Krishi Seva Kendra
           </HeroTitle>
           <HeroSubtitle variants={itemVariants}>
-            Your trusted partner for fresh, organic, and locally sourced agricultural products. 
-            Supporting farmers and serving communities with quality produce.
+            Your trusted partner for premium farm implements, tools, and agricultural equipment. 
+            Empowering farmers with quality machinery and modern farming solutions.
           </HeroSubtitle>
           <HeroButtons variants={itemVariants}>
             <Link to="/products" className="btn btn-primary">
-              Explore Products
+              Explore Equipment
             </Link>
             <Link to="/register" className="btn btn-outline">
-              Join Our Community
+              Become a Partner
             </Link>
           </HeroButtons>
         </HeroContent>
@@ -194,11 +194,11 @@ const Home = () => {
               viewport={{ once: true }}
               whileHover={{ scale: 1.05 }}
             >
-              <FeatureIcon>🌱</FeatureIcon>
-              <h3>Fresh & Organic</h3>
-              <p>Direct from farm to your table. All our products are certified organic and freshly harvested.</p>
+              <FeatureIcon>🚜</FeatureIcon>
+              <h3>Premium Equipment</h3>
+              <p>High-quality tractors, tillers, harvesters, and farming implements from trusted manufacturers.</p>
               <Link to="/products" className="btn btn-outline" style={{ marginTop: '1rem' }}>
-                Shop Fresh Produce
+                Browse Equipment
               </Link>
             </FeatureCard>
 
@@ -209,11 +209,11 @@ const Home = () => {
               viewport={{ once: true }}
               whileHover={{ scale: 1.05 }}
             >
-              <FeatureIcon>👨‍🌾</FeatureIcon>
-              <h3>Support Local Farmers</h3>
-              <p>Every purchase directly supports local farmers and helps build sustainable agricultural communities.</p>
+              <FeatureIcon>🔧</FeatureIcon>
+              <h3>Expert Support</h3>
+              <p>Professional installation, maintenance services, and technical support for all farm equipment.</p>
               <Link to="/about" className="btn btn-outline" style={{ marginTop: '1rem' }}>
-                Learn More
+                Our Services
               </Link>
             </FeatureCard>
 
@@ -224,11 +224,11 @@ const Home = () => {
               viewport={{ once: true }}
               whileHover={{ scale: 1.05 }}
             >
-              <FeatureIcon>🏢</FeatureIcon>
-              <h3>Business Solutions</h3>
-              <p>Bulk orders, competitive pricing, and reliable supply chains for restaurants and retailers.</p>
+              <FeatureIcon>💰</FeatureIcon>
+              <h3>Financing Options</h3>
+              <p>Flexible payment plans, EMI options, and special offers to make modern farming affordable.</p>
               <Link to="/services" className="btn btn-outline" style={{ marginTop: '1rem' }}>
-                Business Services
+                Financing Plans
               </Link>
             </FeatureCard>
           </FeatureGrid>

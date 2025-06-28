@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -163,7 +162,7 @@ const Contact = () => {
           <ContactGrid>
             <ContactInfo variants={itemVariants}>
               <h2 style={{ marginBottom: '2rem', color: '#333' }}>Get in Touch</h2>
-              
+
               <ContactItem variants={itemVariants}>
                 <ContactIcon>📍</ContactIcon>
                 <div>
@@ -201,7 +200,7 @@ const Contact = () => {
 
             <ContactForm variants={itemVariants} onSubmit={handleSubmit}>
               <h2 style={{ marginBottom: '2rem', color: '#333' }}>Send us a Message</h2>
-              
+
               <FormGroup variants={itemVariants}>
                 <Label htmlFor="name">Name</Label>
                 <Input

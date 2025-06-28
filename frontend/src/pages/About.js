@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -68,7 +67,7 @@ const StoryContent = styled(motion.div)`
     margin-bottom: 1.5rem;
     color: #333;
   }
-  
+
   p {
     font-size: 1.1rem;
     line-height: 1.8;
@@ -94,9 +93,7 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Established with a vision to bridge the gap between farmers and consumers, 
-            R.S. Krishi Seva Kendra has been serving the community for over a decade 
-            with fresh, organic, and sustainable agricultural products.
+            Leading farm equipment dealer serving farmers since 1995
           </AboutSubtitle>
         </div>
       </HeroSection>

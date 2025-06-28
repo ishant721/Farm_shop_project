@@ -137,45 +137,45 @@ const Products = () => {
       setProducts([
         {
           id: 1,
-          name: "Fresh Organic Tomatoes",
-          description: "Locally grown, pesticide-free tomatoes perfect for your kitchen.",
-          price: 45.00,
-          emoji: "🍅"
+          name: "Heavy Duty Tractor",
+          description: "40HP diesel tractor with advanced hydraulics and PTO. Perfect for all farming operations.",
+          price: 485000.00,
+          emoji: "🚜"
         },
         {
           id: 2,
-          name: "Premium Basmati Rice",
-          description: "Aromatic long-grain rice, perfect for biryanis and pulao.",
-          price: 120.00,
-          emoji: "🍚"
+          name: "Rotary Tiller",
+          description: "Professional grade rotary tiller for soil preparation and cultivation.",
+          price: 28500.00,
+          emoji: "⚡"
         },
         {
           id: 3,
-          name: "Fresh Green Vegetables",
-          description: "Mixed seasonal vegetables, fresh from our partner farms.",
-          price: 85.00,
-          emoji: "🥬"
+          name: "Seed Drill Machine",
+          description: "Precision seed drill for accurate sowing with adjustable row spacing.",
+          price: 65000.00,
+          emoji: "🌱"
         },
         {
           id: 4,
-          name: "Organic Wheat Flour",
-          description: "Stone-ground wheat flour, rich in nutrients and flavor.",
-          price: 55.00,
+          name: "Harvester Combine",
+          description: "Multi-crop harvester combine with threshing and cleaning system.",
+          price: 1250000.00,
           emoji: "🌾"
         },
         {
           id: 5,
-          name: "Farm Fresh Eggs",
-          description: "Free-range eggs from healthy, happy chickens.",
-          price: 25.00,
-          emoji: "🥚"
+          name: "Water Pump Set",
+          description: "High-efficiency submersible water pump for irrigation systems.",
+          price: 45000.00,
+          emoji: "💧"
         },
         {
           id: 6,
-          name: "Pure Honey",
-          description: "Raw, unprocessed honey directly from local beekeepers.",
-          price: 180.00,
-          emoji: "🍯"
+          name: "Power Weeder",
+          description: "Battery-operated power weeder for effective weed control and soil aeration.",
+          price: 18500.00,
+          emoji: "🔋"
         }
       ]);
       setLoading(false);
@@ -214,7 +214,7 @@ const Products = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Our Fresh Products
+            Farm Equipment & Implements
           </ProductsTitle>
           
           <SearchBar
@@ -224,7 +224,7 @@ const Products = () => {
           >
             <SearchInput
               type="text"
-              placeholder="Search for products..."
+              placeholder="Search for equipment, tractors, tools..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -263,7 +263,7 @@ const Products = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Add to Cart
+                      Get Quote
                     </ProductButton>
                   </ProductInfo>
                 </ProductCard>
