@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sale #{{ sale.pk }} - Farm Shop{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded">
+        <li class="breadcrumb-item"><a href="{% url 'products:sale_list' %}">Sales</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sale #{{ sale.pk }}</li>
+    </ol>
+</nav>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h3 class="my-0">Sale Details: #{{ sale.pk }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Receipt Number:</strong> {{ sale.receipt_number }}</div> {# <--- ADDED #}
+            <div class="col-md-6"><strong>Product:</strong> {{ sale.product.name }} ({{ sale.product.unit }})</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Customer:</strong> {{ sale.customer.username|default:"N/A" }}</div>
+            <div class="col-md-6"><strong>Quantity:</strong> {{ sale.quantity }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Unit Price:</strong> ${{ sale.unit_price|floatformat:2 }}</div>
+            <div class="col-md-6"><strong>Sub-Total:</strong> ${{ sale.sub_total|floatformat:2 }}</div> {# <--- ADDED #}
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>GST Rate:</strong> {{ sale.gst_rate|floatformat:2 }}%</div> {# <--- ADDED #}
+            <div class="col-md-6"><strong>GST Amount:</strong> ${{ sale.gst_amount|floatformat:2 }}</div> {# <--- ADDED #}
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Grand Total:</strong> ${{ sale.grand_total|floatformat:2 }}</div> {# <--- ADDED #}
+            <div class="col-md-6"><strong>Sale Date:</strong> {{ sale.sale_date|date:"F j, Y" }}</div>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Recorded By:</strong> {{ sale.created_by.username|default:"N/A" }}</div>
+            <div class="col-md-6"><strong>Recorded At:</strong> {{ sale.created_at|date:"F j, Y H:i" }}</div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'products:sale_list' %}" class="btn btn-outline-secondary me-2">Back to Sales</a>
+            {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                <a href="{% url 'products:sale_delete' pk=sale.pk %}" class="btn btn-danger me-2">Delete Record</a>
+            {% endif %}
+            {# --- START OF NEW ADDITION: View/Print Receipt Buttons --- #}
+            {% if sale.receipt_number %}
+                <a href="{% url 'products:sale_receipt_detail' receipt_number=sale.receipt_number %}" class="btn btn-primary me-2">View Receipt</a>
+                <a href="{% url 'products:sale_receipt_print' receipt_number=sale.receipt_number %}" target="_blank" class="btn btn-outline-primary">Print Receipt</a>
+            {% endif %}
+            {# --- END OF NEW ADDITION --- #}
+        </div>
+    </div>
+</div>
+{% endblock %}

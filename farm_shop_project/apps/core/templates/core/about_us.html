@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% load static %} {# <--- ADD THIS LINE #}
+
+{% block title %}About Us - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="p-5 bg-light rounded-3 shadow-sm mb-4">
+    <h1 class="display-5 fw-bold">About Farm Shop</h1>
+    <p class="fs-4">Connecting you directly with local farmers and fresh produce.</p>
+</div>
+
+<div class="row featurette">
+    <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">Our Mission. <span class="text-muted">Simple & Sustainable.</span></h2>
+        <p class="lead">At Farm Shop, we believe in supporting local agriculture and providing our community with the freshest, highest-quality produce. We cut out the middlemen, ensuring fair prices for farmers and exceptional value for our customers.</p>
+    </div>
+    <div class="col-md-5">
+        <img src="{% static 'core/img/about_mission.jpg' %}" class="img-fluid rounded shadow" alt="Our Mission" style="object-fit: cover; height: 300px; width: 100%;">
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="row featurette">
+    <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">The Farm Shop Story. <span class="text-muted">From Seed to Table.</span></h2>
+        <p class="lead">Founded in [Year], Farm Shop began with a simple idea: to create a digital marketplace where local farmers could easily sell their harvest directly to consumers. We started small, but our commitment to freshness, transparency, and community has helped us grow into a trusted name for farm-fresh goods.</p>
+    </div>
+    <div class="col-md-5 order-md-1">
+        <img src="{% static 'core/img/about_story.jpg' %}" class="img-fluid rounded shadow" alt="Our Story" style="object-fit: cover; height: 300px; width: 100%;">
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="text-center mt-5">
+    <h3>Our Values</h3>
+    <div class="row mt-4">
+        <div class="col-lg-4">
+            <i class="fas fa-seedling fa-3x text-success mb-3"></i>
+            <h4>Local & Fresh</h4>
+            <p>We prioritize produce from local farms, ensuring maximum freshness and minimal environmental impact.</p>
+        </div>
+        <div class="col-lg-4">
+            <i class="fas fa-handshake fa-3x text-success mb-3"></i>
+            <h4>Fair & Transparent</h4>
+            <p>We strive for fair pricing for farmers and transparent sourcing for customers.</p>
+        </div>
+        <div class="col-lg-4">
+            <i class="fas fa-users fa-3x text-success mb-3"></i>
+            <h4>Community Focused</h4>
+            <p>Building a stronger, healthier community through direct farm-to-consumer connections.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

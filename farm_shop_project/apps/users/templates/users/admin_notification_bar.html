@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Send Notification to Farmers - Admin{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-9 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header text-center bg-info text-white py-3">
+                <h3 class="my-0">Send Notification to Farmers</h3>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-center text-muted mb-4">Send email notifications to specific farmers or all active farmers.</p>
+                <form method="post" id="notificationForm">
+                    {% csrf_token %}
+                    
+                    {# Hidden input to store selected farmer IDs, populated by JavaScript #}
+                    {{ form.selected_farmer_ids }}
+
+                    <div class="mb-3">
+                        <label for="farmerSearchInput" class="form-label">Search Farmers</label>
+                        <input type="text" id="farmerSearchInput" class="form-control" placeholder="Search by username, name, or email">
+                        <small class="form-text text-muted">Type at least 3 characters to search.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Search Results</label>
+                        <div id="searchResults" class="list-group" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px;">
+                            <p class="text-center text-muted p-3" id="noResultsMessage">No results found. Start typing to search.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Selected Farmers (<span id="selectedCount">0</span>)</label>
+                        <div id="selectedFarmersContainer" class="list-group" style="min-height: 50px; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+                            <p class="text-center text-muted" id="noSelectedMessage">No farmers selected. Leave search blank to send to all.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.message_body.id_for_label }}" class="form-label">{{ form.message_body.label }}</label>
+                        {{ form.message_body }}
+                        {% if form.message_body.errors %}<div class="text-danger small mt-1">{{ form.message_body.errors }}</div>{% endif %}
+                    </div>
+                    
+                    {% if form.non_field_errors %}<div class="alert alert-danger small mt-1">{{ form.non_field_errors }}</div>{% endif %}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-info btn-lg">Send Notification</button>
+                        <a href="{% url 'users:admin_dashboard' %}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'users/js/admin_farmer_search.js' %}"></script>
+{% endblock %}

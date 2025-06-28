@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Employee Dashboard{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-4 rounded shadow-sm">
+    <h1 class="display-5">Employee Dashboard</h1>
+    <p class="lead">Welcome, {{ user.username }}! Here you can manage daily shop operations.</p>
+    <hr class="my-4">
+    <p>As a farm shop employee, your responsibilities include:</p>
+    <ul>
+        <li>Processing customer orders</li>
+        <li>Updating inventory levels</li>
+        <li>Handling customer inquiries</li>
+        <li>Assisting with product displays</li>
+        <li>Adding new products for admin approval</li>
+        <li>Creating and managing farmer bills</li>
+        <li>**Recording product purchases (incoming stock)**</li> {# <--- ADDED #}
+        <li>**Recording product sales (outgoing stock)**</li> {# <--- ADDED #}
+    </ul>
+    <a class="btn btn-success" href="#" role="button">View Orders</a>
+    <a class="btn btn-outline-secondary" href="{% url 'products:product_add' %}" role="button">Add New Product</a>
+    <a class="btn btn-primary" href="{% url 'finance:bill_list' %}" role="button">Manage Farmer Bills</a>
+    <a class="btn btn-info" href="{% url 'products:purchase_list' %}" role="button">Manage Purchases</a> {# <--- ADDED LINK #}
+    <a class="btn btn-warning text-dark" href="{% url 'products:sale_list' %}" role="button">Manage Sales</a> {# <--- ADDED LINK #}
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Recent Orders</h5>
+                <p class="card-text">Quick overview of pending and completed orders.</p>
+                <a href="#" class="btn btn-sm btn-outline-primary">Go to Order List</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Inventory Alerts</h5>
+                <p class="card-text">Items running low or needing restock.</p>
+                <a href="{% url 'products:product_management_list' %}" class="btn btn-sm btn-outline-warning">Check Stock Levels</a> {# <--- LINK TO PRODUCT MANAGEMENT #}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

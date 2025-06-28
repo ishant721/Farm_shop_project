@@ -1,0 +1,41 @@
+{# This file is an override of jazzmin/templates/admin/includes/fieldset.html #}
+{# Modified line 22 to use standard Django 'length' filter instead of 'length_is' #}
+
+<fieldset class="module aligned {{ fieldset.classes|join:' ' }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}<div class="description">{{ fieldset.description|safe }}</div>{% endif %}
+    {% if fieldset.form.non_field_errors %}<div class="errornote">{{ fieldset.form.non_field_errors }}</div>{% endif %}
+    {% for line in fieldset %}
+        {# The problematic line 22 is here #}
+        {# Changed line.fields|length_is:'1' to line.fields|length == 1 #}
+        <div class="form-group{% if line.fields|length == 1 and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line.fields %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length == 1 %}{# Only one field on the line #}
+                {% for field in line %}
+                    {% if field.is_checkbox %}
+                        <div class="form-check">
+                            <label for="{{ field.id_for_label }}" class="form-check-label">{{ field.field.label }}</label>
+                            {{ field.field }}
+                            {% if field.field.errors %}<div class="text-danger small">{{ field.field.errors }}</div>{% endif %}
+                        </div>
+                    {% else %}
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.field.label }}</label>
+                        {{ field.field }}
+                        {% if field.field.errors %}<div class="text-danger small">{{ field.field.errors }}</div>{% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}{# Multiple fields on the line, so create a row and columns #}
+                <div class="row">
+                    {% for field in line %}
+                        {# This class logic is from Jazzmin's original fieldset.html #}
+                        <div class="{% if not line.fields|length == 1 and forloop.counter != 1 %}col-auto {% else %}col-sm-3{% endif %} text-left">
+                            <label for="id_{{ field.field.name }}" class="form-label">{{ field.field.label }}</label>
+                            {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                            {{ field.field }}
+                            {% if field.field.errors %}<div class="text-danger small">{{ field.field.errors }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</fieldset>

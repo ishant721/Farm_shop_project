@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Purchase #{{ purchase.pk }} - Farm Shop{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded">
+        <li class="breadcrumb-item"><a href="{% url 'products:purchase_list' %}">Purchases</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Purchase #{{ purchase.pk }}</li>
+    </ol>
+</nav>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h3 class="my-0">Purchase Details: #{{ purchase.pk }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Product:</strong> {{ purchase.product.name }} ({{ purchase.product.unit }})</div>
+            <div class="col-md-6"><strong>Supplier:</strong> {{ purchase.supplier.name|default:"N/A" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Quantity:</strong> {{ purchase.quantity }}</div>
+            <div class="col-md-6"><strong>Unit Cost:</strong> ${{ purchase.unit_cost|floatformat:2 }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Total Cost:</strong> ${{ purchase.total_cost|floatformat:2 }}</div>
+            <div class="col-md-6"><strong>Purchase Date:</strong> {{ purchase.purchase_date|date:"F j, Y" }}</div>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Recorded By:</strong> {{ purchase.created_by.username|default:"N/A" }}</div>
+            <div class="col-md-6"><strong>Recorded At:</strong> {{ purchase.created_at|date:"F j, Y H:i" }}</div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'products:purchase_list' %}" class="btn btn-outline-secondary me-2">Back to Purchases</a>
+            {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                <a href="{% url 'products:purchase_delete' pk=purchase.pk %}" class="btn btn-danger">Delete Record</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

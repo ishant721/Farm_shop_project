@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Bill #{{ bill.pk }} - Farm Shop{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded">
+        <li class="breadcrumb-item"><a href="{% url 'finance:bill_list' %}">Farmer Bills</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Bill #{{ bill.pk }}</li>
+    </ol>
+</nav>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h3 class="my-0">Bill Details: #{{ bill.pk }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Farmer:</strong> {{ bill.farmer.username }} ({{ bill.farmer.get_full_name }})</div>
+            <div class="col-md-6"><strong>Bill Description:</strong> {{ bill.description|default:"N/A" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Total Amount:</strong> ${{ bill.total_amount|floatformat:2 }}</div>
+            <div class="col-md-6"><strong>Amount Paid:</strong> ${{ bill.paid_amount|floatformat:2 }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <strong>Amount Due:</strong> 
+                <span class="fw-bold {% if bill.amount_due > 0 and bill.due_date < today %}text-danger{% elif bill.amount_due > 0 %}text-warning{% else %}text-success{% endif %}">
+                    ${{ bill.amount_due|floatformat:2 }}
+                </span>
+            </div>
+            <div class="col-md-6"><strong>Due Date:</strong> {{ bill.due_date|date:"F j, Y" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <strong>Payment Status:</strong> 
+                {% if bill.payment_status == 'Paid' %}
+                    <span class="badge bg-success">{{ bill.payment_status }}</span>
+                {% elif bill.payment_status == 'Overdue' %}
+                    <span class="badge bg-danger">{{ bill.payment_status }}</span>
+                {% elif bill.payment_status == 'Partially Paid' %}
+                    <span class="badge bg-info">{{ bill.payment_status }}</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">{{ bill.payment_status }}</span>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <strong>Approval Status:</strong>
+                {% if bill.is_approved %}
+                    <span class="badge bg-success">Approved</span>
+                {% else %}
+                    <span class="badge bg-secondary">Pending Approval</span>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Created By:</strong> {{ bill.created_by.username|default:"N/A" }}</div>
+            <div class="col-md-6"><strong>Created At:</strong> {{ bill.created_at|date:"F j, Y H:i" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Last Updated:</strong> {{ bill.updated_at|date:"F j, Y H:i" }}</div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'finance:bill_list' %}" class="btn btn-outline-secondary me-2">Back to Bills</a>
+
+            {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                <a href="{% url 'finance:bill_edit' pk=bill.pk %}" class="btn btn-info me-2">Edit Bill</a>
+                <a href="{% url 'finance:bill_delete' pk=bill.pk %}" class="btn btn-danger me-2">Delete Bill</a>
+                
+                {% if not bill.is_approved %}
+                    <form action="{% url 'finance:bill_approve_reject' pk=bill.pk %}" method="post" class="d-inline me-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit" class="btn btn-success">Approve Bill</button>
+                    </form>
+                    <form action="{% url 'finance:bill_approve_reject' pk=bill.pk %}" method="post" class="d-inline me-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="btn btn-warning">Reject Bill</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
+            {% if bill.can_send_reminder %}
+                <form action="{% url 'finance:send_payment_reminder' pk=bill.pk %}" method="post" class="d-inline ms-2">
+                    {% csrf_token %}
+                    <label for="new_due_date" class="form-label visually-hidden">New Due Date (Optional)</label>
+                    <input type="date" 
+                           id="new_due_date" 
+                           name="new_due_date" 
+                           class="form-control d-inline-block w-auto me-2" 
+                           value="" 
+                           autocomplete="off" 
+                           title="Optional: Change due date and send reminder">
+                    <button type="submit" class="btn btn-secondary">Send Reminder</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

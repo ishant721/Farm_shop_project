@@ -1,0 +1,43 @@
+/* apps/users/static/users/css/main.css */
+/* Styles specific to users app, particularly for form layout */
+
+/* Password Toggle Icon Styling */
+.position-relative {
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(12px); /* Adjust to align with input text */
+    cursor: pointer;
+    color: #888;
+    font-size: 0.9em;
+    z-index: 10; /* Ensure it's above the input */
+}
+
+/* Error messages below fields */
+.text-danger.small.mt-1 {
+    font-size: 0.875em; /* Smaller font size for errors */
+}
+
+/* --- START OF CHANGE --- */
+/* Removed styling for PhoneNumberPrefixWidget as it's no longer used. */
+/* .phonenumber-prefix-widget {
+    display: flex;
+    width: 100%;
+}
+.phonenumber-prefix-widget select.form-select {
+    flex: 0 0 auto;
+    max-width: 120px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+.phonenumber-prefix-widget input[type="tel"].form-control {
+    flex: 1 1 auto;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+} */
+/* --- END OF CHANGE --- */

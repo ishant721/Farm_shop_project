@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .header { background-color: #28a745; color: white; padding: 10px; text-align: center; border-radius: 5px 5px 0 0; }
+        .details { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 15px; }
+        .footer { font-size: 0.8em; color: #777; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>New Farmer Bill Awaiting Your Approval</h2>
+        </div>
+        <p>Dear Admin,</p>
+        <p>A new bill has been created and is awaiting your approval on Farm Shop.</p>
+        <div class="details">
+            <p><strong>Bill ID:</strong> #{{ bill_id }}</p>
+            <p><strong>Farmer:</strong> {{ farmer_username }}</p>
+            <p><strong>Total Amount:</strong> ${{ total_amount|floatformat:2 }}</p>
+            <p><strong>Amount Paid:</strong> ${{ paid_amount|floatformat:2 }}</p>
+            <p><strong>Amount Due:</strong> ${{ amount_due|floatformat:2 }}</p>
+            <p><strong>Due Date:</strong> {{ due_date|date:"F j, Y" }}</p>
+            <p><strong>Created By:</strong> {{ created_by_username }}</p>
+        </div>
+        <p>Please review this bill and approve it if it is correct:</p>
+        <p><a href="{{ bill_management_url }}">{{ bill_management_url }}</a></p>
+        <p>Best regards,<br>The {{ site_name }} Team</p>
+        <div class="footer">
+            © {{ site_name }} {% now "Y" %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Farm Shop{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded">
+        <li class="breadcrumb-item"><a href="{% url 'products:product_list' %}">Products</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+    </ol>
+</nav>
+
+<div class="card mb-4 shadow-sm">
+    <div class="row g-0">
+        <div class="col-md-5">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}" style="max-height: 400px; object-fit: contain; width: 100%;">
+            {% else %}
+            <img src="{% static 'core/img/default_product.png' %}" class="img-fluid rounded-start" alt="Default Product Image" style="max-height: 400px; object-fit: contain; width: 100%;">
+            {% endif %}
+        </div>
+        <div class="col-md-7">
+            <div class="card-body">
+                <h1 class="card-title">{{ product.name }}</h1>
+                <p class="card-text text-muted">{{ product.description }}</p>
+                <hr>
+                <p class="card-text"><strong>Price:</strong> <span class="h4 text-success">${{ product.price|floatformat:2 }}</span></p> {# <--- REMOVED / {{ product.unit }} #}
+                
+                {# --- START OF CHANGE: Display availability --- #}
+                <p class="card-text"><strong>Availability:</strong>
+                    {% if product.stock > 0 %}
+                        <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                        <span class="badge bg-danger">Sold Out</span>
+                    {% endif %}
+                </p>
+                {# --- END OF CHANGE --- #}
+
+                <p class="card-text"><small class="text-muted">Added: {{ product.created_at|date:"F j, Y" }}</small></p>
+                
+                <div class="mt-3">
+                    <button class="btn btn-success" {% if product.stock == 0 %}disabled{% endif %}>Add to Cart</button>
+                    <a href="{% url 'products:product_list' %}" class="btn btn-outline-secondary ms-2">Back to Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

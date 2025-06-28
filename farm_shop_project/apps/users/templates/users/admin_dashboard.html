@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Admin Dashboard</h2>
+    <div>
+        <a href="{% url 'admin:index' %}" class="btn btn-outline-primary me-2">
+            <i class="fas fa-database me-2"></i>Access Database Tables (Django Admin)
+        </a>
+        <a href="{% url 'users:admin_create_employee' %}" class="btn btn-success me-2">
+            <i class="fas fa-plus-circle me-2"></i>Add New Employee
+        </a>
+        <a href="{% url 'users:admin_notify_farmers' %}" class="btn btn-info">
+            <i class="fas fa-bullhorn me-2"></i>Notify Farmers
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Employee Management</h5>
+            </div>
+            <div class="card-body">
+                {% if employees %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td>{{ employee.username }}</td>
+                                <td>{{ employee.email }}</td>
+                                <td>{{ employee.get_full_name|default:"N/A" }}</td>
+                                <td>{{ employee.phone_number|default:"N/A" }}</td>
+                                <td>
+                                    {% if employee.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Banned</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{% url 'users:toggle_employee_status' pk=employee.pk %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm {% if employee.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                                            {% if employee.is_active %}Ban{% else %}Activate{% endif %}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    No employees found. Click "Add New Employee" to get started!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Quick Stats</h5>
+            </div>
+            <div class="card-body">
+                <p>Total Registered Users: {{ total_users_count }}</p>
+                <p>Active Employees: {{ active_employees_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Shop Management & Finance</h5> {# <--- UPDATED CARD TITLE #}
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="{% url 'products:product_management_list' %}" class="text-decoration-none">View/Manage All Products</a></li>
+                    <li class="list-group-item"><a href="{% url 'products:product_add' %}" class="text-decoration-none">Add New Product</a></li>
+                    <li class="list-group-item"><a href="{% url 'admin:products_product_changelist' %}" class="text-decoration-none">Products in Django Admin (Raw)</a></li>
+                    <li class="list-group-item"><a href="{% url 'finance:bill_list' %}" class="text-decoration-none">Manage Farmer Bills</a></li>
+                    <li class="list-group-item"><a href="{% url 'finance:bill_create' %}" class="text-decoration-none">Create New Farmer Bill</a></li>
+                    <li class="list-group-item"><a href="{% url 'products:supplier_list' %}" class="text-decoration-none">Manage Suppliers</a></li> {# <--- NEW LINK #}
+                    <li class="list-group-item"><a href="{% url 'products:purchase_list' %}" class="text-decoration-none">View All Purchases</a></li> {# <--- NEW LINK #}
+                    <li class="list-group-item"><a href="{% url 'products:purchase_record' %}" class="text-decoration-none">Record New Purchase</a></li> {# <--- NEW LINK #}
+                    <li class="list-group-item"><a href="{% url 'products:sale_list' %}" class="text-decoration-none">View All Sales</a></li> {# <--- NEW LINK #}
+                    <li class="list-group-item"><a href="{% url 'products:sale_record' %}" class="text-decoration-none">Record New Sale</a></li> {# <--- NEW LINK #}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

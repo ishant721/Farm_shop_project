@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Purchases - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Product Purchases</h2>
+    {% if request.user.is_superuser or request.user.user_type == 'employee' or request.user.user_type == 'admin' %}
+        <a href="{% url 'products:purchase_record' %}" class="btn btn-success">
+            <i class="fas fa-plus-circle me-2"></i>Record New Purchase
+        </a>
+    {% endif %}
+</div>
+
+{% if purchases %}
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Supplier</th>
+                <th>Quantity</th>
+                <th>Unit Cost</th>
+                <th>Total Cost</th>
+                <th>Date</th>
+                <th>Recorded By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.pk }}</td>
+                <td>{{ purchase.product.name }} ({{ purchase.product.unit }})</td>
+                <td>{{ purchase.supplier.name|default:"N/A" }}</td>
+                <td>{{ purchase.quantity }}</td>
+                <td>${{ purchase.unit_cost|floatformat:2 }}</td>
+                <td>${{ purchase.total_cost|floatformat:2 }}</td>
+                <td>{{ purchase.purchase_date|date:"F j, Y" }}</td>
+                <td>{{ purchase.created_by.username|default:"N/A" }}</td>
+                <td>
+                    <a href="{% url 'products:purchase_detail' pk=purchase.pk %}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                    {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                        {# Typically, purchase records are not edited, but deleted and a new one created for corrections #}
+                        <a href="{% url 'products:purchase_delete' pk=purchase.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if is_paginated %}
+    <nav aria-label="Purchase list pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info" role="alert">
+    No purchase records found.
+</div>
+{% endif %}
+{% endblock %}

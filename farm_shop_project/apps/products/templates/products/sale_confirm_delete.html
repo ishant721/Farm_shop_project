@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Confirm Delete Sale #{{ sale.pk }} - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-danger">
+            <div class="card-header text-center bg-danger text-white py-3">
+                <h3 class="my-0">Confirm Sale Deletion</h3>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-center lead mb-4">Are you sure you want to delete Sale record #{{ sale.pk }} for "{{ sale.product.name }}"?</p>
+                <p class="text-center text-muted">Quantity: {{ sale.quantity }} {{ sale.product.unit }}</p>
+                <p class="text-center text-muted">Deleting this will **add the quantity back to product stock**.</p>
+                <p class="text-center text-muted">This action cannot be undone.</p>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg w-100">Yes, Delete This Record</button>
+                    </form>
+                    <a href="{% url 'products:sale_list' %}" class="btn btn-outline-secondary btn-lg w-100">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Farmer Dashboard{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-4 rounded shadow-sm">
+    <h1 class="display-5">Farmer Dashboard</h1>
+    <p class="lead">Welcome, {{ user.username }}! Manage your farm's products and sales.</p>
+    <hr class="my-4">
+    <p>As a farmer, you can:</p>
+    <ul>
+        <li>Add and update your products</li>
+        <li>View your sales reports and earnings</li>
+        <li>Manage your employees (if applicable)</li>
+        <li>Request payouts</li>
+        <li>View your bills and payment status</li> {# <--- ADDED #}
+    </ul>
+    <a class="btn btn-success" href="#" role="button">My Products</a>
+    <a class="btn btn-outline-secondary" href="#" role="button">Sales & Payouts</a>
+    <a class="btn btn-info" href="{% url 'finance:bill_list' %}" role="button">View My Bills</a> {# <--- ADDED LINK #}
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Product Listings</h5>
+                <p class="card-text">Manage your current and past product offerings.</p>
+                <a href="#" class="btn btn-sm btn-outline-primary">View Products</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Earnings Summary</h5>
+                <p class="card-text">See your latest earnings and upcoming payouts.</p>
+                <a href="#" class="btn btn-sm btn-outline-success">Check Earnings</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

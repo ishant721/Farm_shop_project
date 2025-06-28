@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Receipt #{{ sale.receipt_number }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #fff; /* Ensure white background for printing */
+        }
+        .receipt-container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #28a745;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
+        }
+        .invoice-info, .customer-info {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .invoice-info div, .customer-info div {
+            flex: 1;
+        }
+        .invoice-info .right, .customer-info .right {
+            text-align: right;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .items-table th, .items-table td {
+            border: 1px solid #eee;
+            padding: 8px;
+            text-align: left;
+        }
+        .items-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .items-table td.text-end {
+            text-align: right;
+        }
+        .totals-table {
+            width: 100%;
+            max-width: 250px;
+            float: right;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .totals-table td {
+            padding: 5px 0;
+            border-top: 1px dashed #eee;
+        }
+        .totals-table tr:last-child td {
+            border-top: 2px solid #ccc;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .footer-text {
+            clear: both;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #666;
+        }
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .receipt-container {
+                border: none;
+                box-shadow: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <h1>{{ company_name }}</h1>
+            <p>{{ company_address }}</p>
+            <p>{{ company_contact }}</p>
+            <hr>
+            <h2>SALES RECEIPT</h2>
+        </div>
+
+        <div class="invoice-info">
+            <div>
+                <p><strong>Receipt No:</strong> {{ sale.receipt_number }}</p>
+                <p><strong>Sale Date:</strong> {{ sale.sale_date|date:"F j, Y" }}</p>
+                <p><strong>Time:</strong> {{ sale.created_at|date:"H:i" }}</p>
+            </div>
+            <div class="right">
+                <p><strong>Recorded By:</strong> {{ sale.created_by.username|default:"N/A" }}</p>
+            </div>
+        </div>
+        
+        <div class="customer-info">
+            <div>
+                <p><strong>Sold To:</strong></p>
+                <p>{{ sale.customer.get_full_name|default:sale.customer.username }}</p>
+                {% if sale.customer.email %}<p>{{ sale.customer.email }}</p>{% endif %}
+                {% if sale.customer.phone_number %}<p>{{ sale.customer.phone_number }}</p>{% endif %}
+            </div>
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Unit Price</th>
+                    <th class="text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ sale.product.name }}</td>
+                    <td class="text-end">{{ sale.quantity }} {{ sale.product.unit }}</td>
+                    <td class="text-end">${{ sale.unit_price|floatformat:2 }}</td>
+                    <td class="text-end">${{ sale.total_revenue|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="totals-table">
+            <tbody>
+                <tr>
+                    <td>Sub-Total:</td>
+                    <td class="text-end">${{ sale.sub_total|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>GST ({{ sale.gst_rate|floatformat:2 }}%):</td>
+                    <td class="text-end">${{ sale.gst_amount|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Grand Total:</td>
+                    <td class="text-end">${{ sale.grand_total|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer-text">
+            <p>Thank you for your business!</p>
+            <p>© {{ company_name }} {{ receipt_date|date:"Y" }}</p>
+        </div>
+    </div>
+
+    <div class="text-center no-print" style="margin-top: 20px;">
+        <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Print Receipt</button>
+        <a href="{% url 'products:sale_receipt_detail' receipt_number=sale.receipt_number %}" style="padding: 10px 20px; font-size: 16px; margin-left: 10px; text-decoration: none; background-color: #f0f0f0; color: #333; border: 1px solid #ccc; border-radius: 5px;">Back to Details</a>
+    </div>
+
+    <script>
+        // Automatically trigger print dialog on page load
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+</body>
+</html>

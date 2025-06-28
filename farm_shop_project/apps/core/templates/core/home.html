@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Farm Shop{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center bg-light p-5 rounded shadow-sm">
+    <h1 class="display-4">Welcome to Farm Shop!</h1>
+    <p class="lead">Your one-stop shop for fresh, local produce and farm-fresh goods.</p>
+    <hr class="my-4">
+    <p>Explore our products, manage your farm, or handle business orders – all from one place.</p>
+    <a class="btn btn-success btn-lg" href="{% url 'products:product_list' %}" role="button">Shop Now</a>
+    {% if not user.is_authenticated %}
+    <a class="btn btn-outline-secondary btn-lg ms-2" href="{% url 'users:register' %}" role="button">Register</a>
+    {% endif %}
+</div>
+
+{# --- START OF NEW ADDITION: Featured Products Section --- #}
+{% if featured_products %}
+<h3 class="text-center mt-5 mb-4">Featured Farm Fresh Products</h3>
+<div class="row">
+    {% for product in featured_products %}
+    <div class="col-md-3 mb-4"> {# Use col-md-3 for 4 products per row on medium screens #}
+        <div class="card h-100 shadow-sm">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'core/img/default_product.png' %}" class="card-img-top" alt="Default Product Image" style="height: 180px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text text-muted">{{ product.description|truncatechars:70 }}</p>
+                <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p>
+                <div class="mt-2">
+                    {% if product.stock > 0 %}
+                        <a href="{% url 'products:product_detail' pk=product.pk %}" class="btn btn-success w-100">View Details</a>
+                    {% else %}
+                        <span class="badge bg-danger w-100 py-2">Sold Out</span>
+                        <a href="{% url 'products:product_detail' pk=product.pk %}" class="btn btn-outline-secondary w-100 mt-2">View Details</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="text-center mt-3">
+    <a href="{% url 'products:product_list' %}" class="btn btn-lg btn-outline-success">View All Products</a>
+</div>
+{% endif %}
+{# --- END OF NEW ADDITION --- #}
+
+
+<div class="row mt-5"> {# Adjusted margin-top for separation #}
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">For Customers</h5>
+                <p class="card-text">Discover a wide range of fresh, organic, and locally sourced products.</p>
+                <a href="{% url 'products:product_list' %}" class="btn btn-outline-success">Browse Products</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">For Farmers</h5>
+                <p class="card-text">Showcase your produce, manage inventory, and track your sales effortlessly.</p>
+                <a href="{% url 'users:register' %}" class="btn btn-outline-success">Become a Farmer</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">For Businesses (B2B)</h5>
+                <p class="card-text">Access bulk pricing, streamline orders, and manage supplies for your business.</p>
+                <a href="{% url 'users:register' %}" class="btn btn-outline-success">Register Your Business</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

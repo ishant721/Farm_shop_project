@@ -1,0 +1,7 @@
+{% extends 'core/base.html' %}
+{% block title %}Shopping Cart{% endblock %}
+{% block content %}
+<h2 class="mb-4">Your Shopping Cart</h2>
+<div class="alert alert-info">Your cart is currently empty. Start shopping!</div>
+<p><a href="{% url 'products:product_list' %}" class="btn btn-success">Continue Shopping</a></p>
+{% endblock %}

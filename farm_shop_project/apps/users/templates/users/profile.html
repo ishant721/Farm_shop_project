@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block title %}My Profile - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Welcome to Your Profile, {{ user.username }}!</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">User Details</h5>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>User Type:</strong> {{ user.get_user_type_display }}</p>
+            {% if user.phone_number %}
+                <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+            {% endif %}
+            <!-- --- START OF NEW ADDITION --- -->
+            {% if user.date_of_birth %}
+                <p><strong>Date of Birth:</strong> {{ user.date_of_birth|date:"F j, Y" }}</p>
+            {% endif %}
+            <!-- --- END OF NEW ADDITION --- -->
+            <p><strong>Account Active:</strong> {{ user.is_active|yesno:"Yes,No" }}</p>
+            <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'dashboards:dashboard_redirect' %}" class="btn btn-primary">Go to My Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="p-5 bg-light rounded-3 shadow-sm mb-4 text-center">
+    <h1 class="display-5 fw-bold">Contact Farm Shop</h1>
+    <p class="fs-4">We'd love to hear from you!</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5>Get in Touch</h5>
+            </div>
+            <div class="card-body">
+                <p>Have a question about our products, an order, or anything else? Reach out to us using the form below or through our contact details.</p>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="John Doe">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" placeholder="Order Inquiry #123">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="4" placeholder="Your message..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5>Our Details & Location</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Farm Shop Headquarters:</strong></p>
+                <address>
+                    123 Farm Fresh Lane<br>
+                    Rural Town, State 12345<br>
+                    Country
+                </address>
+                <p><strong>Phone:</strong> <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+                <p><strong>Email:</strong> <a href="mailto:info@farmshop.com">info@farmshop.com</a></p>
+
+                <hr>
+                <h6>Business Hours:</h6>
+                <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                <p>Saturday: 10:00 AM - 2:00 PM</p>
+                <p>Sunday: Closed</p>
+
+                <div class="mt-4">
+                    <h6>Follow Us:</h6>
+                    <a href="#" class="text-success me-3"><i class="fab fa-facebook-square fa-2x"></i></a>
+                    <a href="#" class="text-success me-3"><i class="fab fa-instagram-square fa-2x"></i></a>
+                    <a href="#" class="text-success"><i class="fab fa-twitter-square fa-2x"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

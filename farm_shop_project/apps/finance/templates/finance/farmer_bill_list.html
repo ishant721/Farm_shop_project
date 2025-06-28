@@ -1,0 +1,187 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Farmer Bills - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Farmer Bills</h2>
+    {% if request.user.is_superuser or request.user.user_type == 'employee' or request.user.user_type == 'admin' %}
+        <a href="{% url 'finance:bill_create' %}" class="btn btn-success">
+            <i class="fas fa-plus-circle me-2"></i>Create New Bill
+        </a>
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    <form method="GET" class="row g-3 align-items-center">
+        <div class="col-md-4">
+            <label for="statusFilter" class="visually-hidden">Filter by Status</label>
+            <select name="status" id="statusFilter" class="form-select">
+                <option value="">All Statuses</option>
+                {% for status_option in status_options %}
+                    {% if status_option != 'all' %}
+                        <option value="{{ status_option }}" {% if current_status_filter == status_option %}selected{% endif %}>{{ status_option|capfirst }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="searchInput" class="visually-hidden">Search</label>
+            <input type="text" name="q" id="searchInput" class="form-control" placeholder="Search by farmer username or description..." value="{{ search_query }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter/Search</button>
+        </div>
+    </form>
+</div>
+
+{% if messages %}
+    <div class="mb-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if bills %}
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Bill ID</th>
+                <th>Farmer</th>
+                <th>Total Amount</th>
+                <th>Paid Amount</th>
+                <th>Amount Due</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                {% if request.user.is_superuser or request.user.user_type == 'admin' or request.user.user_type == 'employee' %}
+                    <th>Created By</th>
+                {% endif %}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.pk }}</td>
+                <td>{{ bill.farmer.username }}</td>
+                <td>${{ bill.total_amount|floatformat:2 }}</td>
+                <td>${{ bill.paid_amount|floatformat:2 }}</td>
+                <td class="fw-bold {% if bill.amount_due > 0 and bill.due_date < today %}text-danger{% elif bill.amount_due > 0 %}text-warning{% else %}text-success{% endif %}">
+                    ${{ bill.amount_due|floatformat:2 }}
+                </td>
+                <td>{{ bill.due_date|date:"F j, Y" }}</td>
+                <td>
+                    {% if bill.payment_status == 'Paid' %}
+                        <span class="badge bg-success">{{ bill.payment_status }}</span>
+                    {% elif bill.payment_status == 'Overdue' %}
+                        <span class="badge bg-danger">{{ bill.payment_status }}</span>
+                    {% elif bill.payment_status == 'Partially Paid' %}
+                        <span class="badge bg-info">Partially Paid</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">{{ bill.payment_status }}</span>
+                    {% endif %}
+                    {% if not bill.is_approved %}
+                        <span class="badge bg-secondary ms-1">Pending Approval</span>
+                    {% endif %}
+                </td>
+                {% if request.user.is_superuser or request.user.user_type == 'admin' or request.user.user_type == 'employee' %}
+                    <td>{{ bill.created_by.username|default:"N/A" }}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url 'finance:bill_detail' pk=bill.pk %}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                    
+                    {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                        {% if not bill.is_approved %}
+                            <form action="{% url 'finance:bill_approve_reject' pk=bill.pk %}" method="post" class="d-inline me-1">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="approve">
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+                            <form action="{% url 'finance:bill_approve_reject' pk=bill.pk %}" method="post" class="d-inline me-1">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="reject">
+                                <button type="submit" class="btn btn-sm btn-warning">Reject</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'finance:bill_edit' pk=bill.pk %}" class="btn btn-sm btn-info me-1">Edit</a>
+                        {% endif %}
+                        <a href="{% url 'finance:bill_delete' pk=bill.pk %}" class="btn btn-sm btn-danger me-1">Delete</a>
+                    {% endif %}
+
+                    {% if bill.can_send_reminder %}
+                        <form action="{% url 'finance:send_payment_reminder' pk=bill.pk %}" method="post" class="d-inline ms-1 payment-reminder-form"> {# Added class to form #}
+                            {% csrf_token %}
+                            <label for="new_due_date_{{ bill.pk }}" class="form-label visually-hidden">New Due Date (Optional)</label>
+                            <input type="date" 
+                                   id="new_due_date_{{ bill.pk }}" 
+                                   name="new_due_date" 
+                                   class="form-control d-inline-block w-auto me-1 reminder-date-input" {# Added class #}
+                                   value="" {# Ensures it starts empty #}
+                                   autocomplete="off" 
+                                   title="Optional: Change due date and send reminder">
+                            <button type="submit" class="btn btn-sm btn-secondary">Remind to Pay</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if is_paginated %}
+    <nav aria-label="Bill list pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info" role="alert">
+    No bills found or matching your criteria.
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const reminderForms = document.querySelectorAll('.payment-reminder-form');
+
+        reminderForms.forEach(form => {
+            const dateInput = form.querySelector('.reminder-date-input');
+
+            form.addEventListener('submit', function(event) {
+                // If the date input is the native type="date" (not a JS datepicker like jQuery UI Datepicker)
+                // and its value is NOT a valid YYYY-MM-DD format (like empty string or the locale placeholder)
+                // then clear it to ensure an empty string is sent.
+                // Modern browsers with type="date" will send "" if untouched, or YYYY-MM-DD if picked.
+                // Older browsers or some locales might send "dd/mm/yyyy" or similar.
+                if (dateInput.value && !/^\d{4}-\d{2}-\d{2}$/.test(dateInput.value)) {
+                    // If it's not empty AND not YYYY-MM-DD, clear it.
+                    // This catches cases like "dd/mm/yyyy" or other invalid default formats.
+                    dateInput.value = ''; 
+                }
+                // No need to event.preventDefault() unless we want to stop submission entirely based on JS logic.
+                // We're letting Django handle validation.
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Business Dashboard{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-4 rounded shadow-sm">
+    <h1 class="display-5">Business Dashboard</h1>
+    <p class="lead">Welcome, {{ user.username }}! Streamline your B2B farm shop operations.</p>
+    <hr class="my-4">
+    <p>As a business client, you can:</p>
+    <ul>
+        <li>Place bulk orders efficiently</li>
+        <li>Access exclusive business pricing</li>
+        <li>Review your order history and invoices</li>
+        <li>Manage your business account details</li>
+    </ul>
+    <a class="btn btn-success" href="#" role="button">Place Bulk Order</a>
+    <a class="btn btn-outline-secondary" href="#" role="button">View Order History</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Quick Order</h5>
+                <p class="card-text">Easily reorder your most frequent products or create a new bulk order.</p>
+                <a href="#" class="btn btn-sm btn-outline-primary">Start New Order</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Account Balance</h5>
+                <p class="card-text">Check your outstanding invoices and payment status.</p>
+                <a href="#" class="btn btn-sm btn-outline-info">View Invoices</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

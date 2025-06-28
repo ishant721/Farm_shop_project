@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sales - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Product Sales</h2>
+    {% if request.user.is_superuser or request.user.user_type == 'employee' or request.user.user_type == 'admin' %}
+        <a href="{% url 'products:sale_record' %}" class="btn btn-success">
+            <i class="fas fa-plus-circle me-2"></i>Record New Sale
+        </a>
+    {% endif %}
+</div>
+
+{% if sales %}
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Customer</th>
+                <th>Qty</th>
+                <th>Sub-Total</th> {# <--- ADDED #}
+                <th>GST (%)</th> {# <--- ADDED #}
+                <th>GST Amt</th> {# <--- ADDED #}
+                <th>Grand Total</th> {# <--- ADDED #}
+                <th>Date</th>
+                <th>Recorded By</th>
+                <th>Receipt</th> {# <--- ADDED #}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.pk }}</td>
+                <td>{{ sale.product.name }} ({{ sale.product.unit }})</td>
+                <td>{{ sale.customer.username|default:"N/A" }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>${{ sale.sub_total|floatformat:2 }}</td> {# <--- ADDED #}
+                <td>{{ sale.gst_rate|floatformat:2 }}%</td> {# <--- ADDED #}
+                <td>${{ sale.gst_amount|floatformat:2 }}</td> {# <--- ADDED #}
+                <td>${{ sale.grand_total|floatformat:2 }}</td> {# <--- ADDED #}
+                <td>{{ sale.sale_date|date:"F j, Y" }}</td>
+                <td>{{ sale.created_by.username|default:"N/A" }}</td>
+                <td>
+                    {% if sale.receipt_number %}
+                        <a href="{% url 'products:sale_receipt_detail' receipt_number=sale.receipt_number %}" class="btn btn-sm btn-outline-info">View</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'products:sale_detail' pk=sale.pk %}" class="btn btn-sm btn-outline-primary me-1">Details</a> {# Changed to Details #}
+                    {% if request.user.is_superuser or request.user.user_type == 'admin' %}
+                        <a href="{% url 'products:sale_delete' pk=sale.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if is_paginated %}
+    <nav aria-label="Sale list pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info" role="alert">
+    No sales records found.
+</div>
+{% endif %}
+{% endblock %}

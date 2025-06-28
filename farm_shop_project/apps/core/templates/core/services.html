@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Our Services - Farm Shop{% endblock %}
+
+{% block content %}
+<div class="p-5 bg-light rounded-3 shadow-sm mb-4 text-center">
+    <h1 class="display-5 fw-bold">Our Services</h1>
+    <p class="fs-4">Beyond just fresh produce, we offer services to support our community and farmers.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-shopping-basket fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Online Marketplace</h5>
+                <p class="card-text">Browse and purchase a diverse range of fresh fruits, vegetables, dairy, and more directly from local farms.</p>
+                <a href="{% url 'products:product_list' %}" class="btn btn-outline-success btn-sm">Shop Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-truck-loading fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Home Delivery</h5>
+                <p class="card-text">Enjoy the convenience of having your farm-fresh groceries delivered right to your doorstep.</p>
+                {# Add a link to delivery info page if you create one #}
+                <a href="#" class="btn btn-outline-success btn-sm">Learn More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-tractor fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Farmer Support</h5>
+                <p class="card-text">We provide farmers with a direct platform to sell their goods, connect with consumers, and grow their businesses.</p>
+                <a href="{% url 'users:register' %}" class="btn btn-outline-success btn-sm">Join Us</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-boxes fa-3x text-success mb-3"></i>
+                <h5 class="card-title">B2B Wholesale</h5>
+                <p class="card-text">Businesses can access bulk orders of fresh produce with competitive pricing and reliable supply chains.</p>
+                <a href="{% url 'users:register' %}" class="btn btn-outline-success btn-sm">For Businesses</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-hand-holding-heart fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Community Events</h5>
+                <p class="card-text">Participate in local farm tours, seasonal markets, and workshops hosted by our partnered farmers.</p>
+                {# Add a link to events page if you create one #}
+                <a href="#" class="btn btn-outline-success btn-sm">View Events</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Educational Resources</h5>
+                <p class="card-text">Access articles, guides, and tips on sustainable farming, healthy eating, and cooking with fresh ingredients.</p>
+                {# Add a link to blog/resources page if you create one #}
+                <a href="#" class="btn btn-outline-success btn-sm">Explore Resources</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

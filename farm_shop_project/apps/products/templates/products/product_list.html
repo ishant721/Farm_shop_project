@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Our Products{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Our Farm Fresh Products</h2>
+
+<div class="mb-4">
+    <form action="{% url 'products:product_list' %}" method="get" class="d-flex">
+        <input type="search" name="q" class="form-control me-2" placeholder="Search products..." aria-label="Search" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
+
+{% if products %}
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'core/img/default_product.png' %}" class="card-img-top" alt="Default Product Image" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text text-muted">{{ product.description|truncatechars:70 }}</p>
+                <p class="card-text mt-auto"><strong>${{ product.price|floatformat:2 }}</strong></p> {# <--- REMOVED / {{ product.unit }} #}
+                
+                {# --- START OF CHANGE: Display "Sold Out" based on stock --- #}
+                <div class="mt-2">
+                    {% if product.stock > 0 %}
+                        <a href="{% url 'products:product_detail' pk=product.pk %}" class="btn btn-success w-100">View Details</a>
+                    {% else %}
+                        <span class="badge bg-danger w-100 py-2">Sold Out</span>
+                        <a href="{% url 'products:product_detail' pk=product.pk %}" class="btn btn-outline-secondary w-100 mt-2">View Details</a>
+                    {% endif %}
+                </div>
+                {# --- END OF CHANGE --- #}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+    <nav aria-label="Product list pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info" role="alert">
+    No approved products found yet.
+</div>
+{% endif %}
+{% endblock %}
