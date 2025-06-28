@@ -4,12 +4,25 @@ modules = ["python-3.12", "nodejs-20", "web"]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Start React App"
+runButton = "Full Stack App"
 
 [[workflows.workflow]]
 name = "Start React App"
 author = 44372050
 mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm start"
+
+[[workflows.workflow]]
+name = "Full Stack App"
+author = 44372050
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd farm_shop_project && python manage.py runserver 0.0.0.0:5000"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
