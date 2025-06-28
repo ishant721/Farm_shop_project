@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
@@ -45,14 +44,14 @@ export const apiService = {
     localStorage.removeItem('authToken');
     return api.post('/users/logout/');
   },
-  
+
   // Products
   getProducts: () => api.get('/api/products/'),
   getProduct: (id) => api.get(`/api/products/${id}/`),
-  
+
   // Contact
   sendMessage: (messageData) => api.post('/api/contact/', messageData),
-  
+
   // Cart
   getCart: () => api.get('/api/cart/'),
   addToCart: (productId, quantity) => api.post('/api/cart/add/', { product_id: productId, quantity }),
