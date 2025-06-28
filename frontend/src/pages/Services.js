@@ -156,6 +156,31 @@ const Services = () => {
                 </motion.button>
               </ServiceCard>
             ))}
+              <ServiceCard
+                variants={itemVariants}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <ServiceIcon>💰</ServiceIcon>
+                <h3>Government Subsidy Support</h3>
+                <p>Authorized dealer for MP Government subsidy schemes. Get up to 50% subsidy on eligible farm implements through government programs.</p>
+              </ServiceCard>
+
+              <ServiceCard
+                variants={itemVariants}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)"
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <ServiceIcon>📋</ServiceIcon>
+                <h3>Subsidy Documentation</h3>
+                <p>Complete assistance with subsidy paperwork and government formalities. We handle all documentation to ensure you get maximum benefits.</p>
+              </ServiceCard>
           </ServicesGrid>
         </motion.div>
       </div>

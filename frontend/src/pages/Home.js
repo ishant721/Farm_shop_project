@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -155,7 +154,7 @@ const Home = () => {
             repeatType: "reverse"
           }}
         />
-        
+
         <HeroContent>
           <HeroTitle variants={itemVariants}>
             Welcome to R.S. Krishi Seva Kendra
@@ -185,7 +184,7 @@ const Home = () => {
           >
             Why Choose R.S. Krishi Seva Kendra?
           </SectionTitle>
-          
+
           <FeatureGrid>
             <FeatureCard
               initial={{ opacity: 0, y: 50 }}

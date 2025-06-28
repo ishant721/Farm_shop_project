@@ -167,8 +167,9 @@ const Contact = () => {
                 <ContactIcon>📍</ContactIcon>
                 <div>
                   <strong>Address:</strong><br />
-                  123 Main Street, Agricultural District<br />
-                  Your City, State 123456
+                  Near Over Bridge, Beside Sunderson Colony<br />
+                  Kechloha Mohalla, Maihar<br />
+                  District Maihar, Madhya Pradesh
                 </div>
               </ContactItem>
 
@@ -176,7 +177,15 @@ const Contact = () => {
                 <ContactIcon>📞</ContactIcon>
                 <div>
                   <strong>Phone:</strong><br />
-                  +91 98765 43210
+                  +91 93002 97974
+                </div>
+              </ContactItem>
+
+              <ContactItem variants={itemVariants}>
+                <ContactIcon>👤</ContactIcon>
+                <div>
+                  <strong>Proprietor:</strong><br />
+                  Devendra Singh
                 </div>
               </ContactItem>
 

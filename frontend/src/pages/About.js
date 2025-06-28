@@ -116,15 +116,16 @@ const About = () => {
           >
             <h2>Our Story</h2>
             <p>
-              Founded by Ramesh Singh, a passionate advocate for sustainable agriculture, 
-              R.S. Krishi Seva Kendra began as a small local initiative to help farmers 
-              get fair prices for their produce while providing consumers with access to 
-              fresh, chemical-free food.
+              Founded by Devendra Singh, a passionate advocate for modern agriculture, 
+              R.S. Krishi Seva Kendra began as a dedicated initiative to provide farmers 
+              with high-quality agricultural implements and machinery at affordable prices 
+              through government subsidy schemes.
             </p>
             <p>
-              Today, we work with over 200 local farmers across the region, ensuring 
-              sustainable farming practices while building a community that values 
-              quality, freshness, and environmental responsibility.
+              Located in Maihar, Madhya Pradesh, we are authorized dealers for government 
+              subsidy programs under the MP Government of India. We help farmers access 
+              modern farming equipment with subsidized rates, making advanced agricultural 
+              technology accessible to small and medium farmers across the region.
             </p>
           </StoryContent>
         </StoryGrid>
